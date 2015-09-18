@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
+    <form id="registration" class="chat-input i-flex-row">
+        <input type="text" name="name" class="component-chat_input i-flex-column"/>
+        <input type="password" name="password" class="component-chat_input i-flex-column"/>
+        <button type="submit" class="i-flex-column">Отправить</button>
+    </form>
+</section>
+
+<script>
+    registration.onsubmit = function () {
+        var e = new XMLHttpRequest;
+        return e.open("POST", "/registration", !0),
+                e.send(JSON.stringify({
+                        name: this.elements.name.value,
+                        password: this.elements.password.value
+                    })
+                ),
+                this.elements.name.value = "", this.elements.password.value = "", !1
+    }
+</script>
+
+
+</body>
+</html>

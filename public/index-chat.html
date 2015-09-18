@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
+    <form id="publish" class="chat-input i-flex-row">
+        <input type="text" name="message" class="component-chat_input i-flex-column"/>
+        <button type="submit" class="i-flex-column">Отправить</button>
+    </form>
+    <ul id="messages" class="chat-list-box"></ul>
+</section>
+
+<script>
+    (function e() {
+        var t = new XMLHttpRequest;
+        t.open("GET", "/subscribe", !0), t.onreadystatechange = function () {
+            if (4 == this.readyState) {
+                if (200 != this.status)return void setTimeout(e, 500);
+                var t = document.createElement("li");
+                t.appendChild(document.createTextNode(this.responseText)), messages.appendChild(t), e()
+            }
+        }, t.send(null)
+    }());
+
+    publish.onsubmit = function () {
+        var e = new XMLHttpRequest;
+        return e.open("POST", "/publish", !0), e.send(JSON.stringify({message: this.elements.message.value})), this.elements.message.value = "", !1
+    }
+</script>
+
+
+</body>
+</html>
