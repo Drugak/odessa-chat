@@ -1,24 +1,22 @@
 var http = require('http'),
-    fs = require('fs'),
-    url = require('url'),
-    chat = require('./server/chat'),
     express = require('express'),
     path = require('path'),
     app = express(),
-    saveUser = require('./server/models/SaveUser'),
+    chat = require('./server/models/chat'),
+    user = require('./server/modelFunctionality/UserFunctionality'),
+    room = require('./server/modelFunctionality/RoomFunctionality'),
     request = require('request'),
     bodyParser = require('body-parser'),
     multer = require('multer'),
     mongoose = require('./server/lib/mongoose');
 
 
-
 // Static server
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-multer({dest:'./uploads/'}).single()
-multer({dest:'./uploads/'}).array()
-multer({dest:'./uploads/'}).fields()
+multer({dest:'./uploads/'}).single();
+multer({dest:'./uploads/'}).array();
+multer({dest:'./uploads/'}).fields();
 
 // end
 
@@ -27,9 +25,10 @@ mongoose.connection.on('open', function (){
     app.get('/', function(req , res) {
         res.send('index.html');
     });
-    app.get('/subscribe' , function (req, res) {
+    app.get('/subscribe' , function(req, res) {
         chat.subscribe(req, res);
     });
+
     app.post('/publish', function (req , res) {
         var body = '';
 
@@ -57,17 +56,29 @@ mongoose.connection.on('open', function (){
 
     });
     app.post('/registration', function(req , res) {
+        req.on('readable', function() {
+            user.saveUser(
+                JSON.parse(req.read()) , req , res
+            );
+        });
+    });
+    app.post('/authorize' , function(req , res) {
+
         var body = '';
 
         req.on('readable', function() {
             body += req.read();
-            saveUser.saveUser(
-                JSON.parse(body)
-            );
+            user.authorize(
+                JSON.parse(body) , req , res
+            )
         })
-            .on('end', function() {
-                res.end("ok");
-            });
+    });
+    app.put('/room-update' , function(req , res) {
+        req.on('readable', function() {
+            room.roomUpdate(
+                JSON.parse(req.read()) , req , res
+            )
+        })
     });
 });
 
