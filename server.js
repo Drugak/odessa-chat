@@ -25,11 +25,11 @@ mongoose.connection.on('open', function (){
     app.get('/', function(req , res) {
         res.send('index.html');
     });
-    app.get('/subscribe' , function(req, res) {
+    app.get('/api/subscribe' , function(req, res) {
         chat.subscribe(req, res);
     });
 
-    app.post('/publish', function (req , res) {
+    app.post('/api/publish', function (req , res) {
         var body = '';
 
         req.on('readable', function() {
@@ -55,14 +55,14 @@ mongoose.connection.on('open', function (){
             });
 
     });
-    app.post('/registration', function(req , res) {
+    app.post('/api/registration', function(req , res) {
         req.on('readable', function() {
             user.saveUser(
                 JSON.parse(req.read()) , req , res
             );
         });
     });
-    app.post('/authorize' , function(req , res) {
+    app.post('/api/authorize' , function(req , res) {
 
         var body = '';
 
@@ -73,9 +73,16 @@ mongoose.connection.on('open', function (){
             )
         })
     });
-    app.put('/room-update' , function(req , res) {
+    app.put('/api/room-create' , function(req , res) {
         req.on('readable', function() {
-            room.roomUpdate(
+            room.roomCreate(
+                JSON.parse(req.read()) , req , res
+            )
+        })
+    });
+    app.put('/api/room-update-theme' , function(req , res) {
+        req.on('readable', function() {
+            room.roomUpdateTheme(
                 JSON.parse(req.read()) , req , res
             )
         })

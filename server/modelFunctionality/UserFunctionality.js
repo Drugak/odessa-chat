@@ -1,4 +1,5 @@
 var mongoose = require('../lib/mongoose'),
+    service = require('../service/serverResponse_Service'),
     User = require('../models/User').User,
     async = require('async');
 
@@ -11,18 +12,12 @@ exports.saveUser = function (data , req , res) {
     var name = data.name,
         password = data.password;
 
-    function serverResponse (statusCode , statusMessage , user) {
-        res.statusCode = statusCode;
-        res.statusMessage = statusMessage;
-        res.send(user);
-    }
-
     function findName () {
         User.findOne({username: name}, function(err , obj) {
             if(err) throw err;
 
             if(obj) {
-                serverResponse(403 , 'This name employing!');
+                service.serverResponse(res, 403 , 'This name employing!');
             } else {
                 createAndSave();
             }
@@ -40,7 +35,7 @@ exports.saveUser = function (data , req , res) {
             if(err) throw err;
         });
 
-        serverResponse(200 , 'Success registration!');
+        service.serverResponse(res, 200 , 'Success registration!');
     }
 
     findName();
@@ -56,12 +51,6 @@ exports.authorize  = function(desire , req , res) {
         password = desire.password;
 
 
-    function serverResponse (statusCode , statusMessage , user) {
-        res.statusCode = statusCode;
-        res.statusMessage = statusMessage;
-        res.send(user);
-    }
-
     function findName () {
         User.findOne({username: name}, function(err , obj) {
             if(err) throw err;
@@ -69,15 +58,15 @@ exports.authorize  = function(desire , req , res) {
             if(obj != null) {
                 findPassword(obj);
             } else {
-                serverResponse(404 , 'Not found this user name');
+                service.serverResponse(res, 404 , 'Not found this user name');
             }
         });
     }
 
     function findPassword(user) {
         user.password == password ?
-            serverResponse(200 , 'Success login' , user) :
-            serverResponse(400 , 'Incorrect password');
+            service.serverResponse(res, 200 , 'Success login' , user) :
+            service.serverResponse(res, 400 , 'Incorrect password');
     }
 
     findName();

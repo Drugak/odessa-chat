@@ -37,17 +37,27 @@
 </section>
 
 <section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-    <legend>Чат</legend>
+    <legend>Создание комнаты</legend>
     <form id="rooms" class="chat-input i-flex-row">
-        <input type="text" name="name" class="component-chat_input i-flex-column"/>
-        <input type="number" name="id" class="component-chat_input i-flex-column"/>
+        <input type="text" placeholder="Имя комнаты" name="name" class="component-chat_input i-flex-column"/>
+        <input type="number" name="id" placeholder="id комнаты" class="component-chat_input i-flex-column"/>
         <button type="submit" class="i-flex-column">Отправить</button>
     </form>
 </section>
+
+<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
+    <legend>Создание темы в комнате</legend>
+    <form id="roomsTheme" class="chat-input i-flex-row">
+        <input type="number" placeholder="id комнаты" name="id" class="component-chat_input i-flex-column"/>
+        <input type="text" placeholder="название комнаты" name="name" class="component-chat_input i-flex-column"/>
+        <button type="submit" class="i-flex-column">Отправить</button>
+    </form>
+</section>
+
 <script>
     registration.onsubmit = function () {
         var e = new XMLHttpRequest;
-        return e.open("POST", "/registration", !0),
+        return e.open("POST", "/api/registration", !0),
                 e.send(JSON.stringify({
                         name: this.elements.name.value,
                         password: this.elements.password.value
@@ -58,7 +68,7 @@
 
     rooms.onsubmit = function () {
         var e = new XMLHttpRequest;
-        return e.open("PUT", "/room-update", !0),
+        return e.open("PUT", "/api/room-create", !0),
                 e.send(JSON.stringify({
                             name: this.elements.name.value,
                             id: this.elements.id.value
@@ -69,7 +79,7 @@
 
     login.onsubmit = function () {
         var e = new XMLHttpRequest;
-        return e.open("POST", "/authorize", !0),
+        return e.open("POST", "/api/authorize", !0),
                 e.send(JSON.stringify({
                             name: this.elements.name.value,
                             password: this.elements.password.value
@@ -78,9 +88,20 @@
                 this.elements.name.value = "", this.elements.password.value = "", !1
     };
 
+    roomsTheme.onsubmit = function () {
+        var e = new XMLHttpRequest;
+        return e.open("PUT", "/api/room-update-theme", !0),
+                e.send(JSON.stringify({
+                            name: this.elements.name.value,
+                            id: this.elements.id.value
+                        })
+                ),
+                this.elements.name.value = "", this.elements.id.value = "", !1
+    };
+
     (function e() {
         var t = new XMLHttpRequest;
-        t.open("GET", "/subscribe", !0), t.onreadystatechange = function () {
+        t.open("GET", "/api/subscribe", !0), t.onreadystatechange = function () {
             if (4 == this.readyState) {
                 if (200 != this.status)return void setTimeout(e, 500);
                 var t = document.createElement("li");
@@ -91,7 +112,7 @@
 
     publish.onsubmit = function () {
         var e = new XMLHttpRequest;
-        return e.open("POST", "/publish", !0), e.send(JSON.stringify({message: this.elements.message.value})), this.elements.message.value = "", !1
+        return e.open("POST", "/api/publish", !0), e.send(JSON.stringify({message: this.elements.message.value})), this.elements.message.value = "", !1
     }
 
 </script>

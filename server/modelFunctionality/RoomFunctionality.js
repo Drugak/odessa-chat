@@ -1,21 +1,50 @@
 var mongoose = require('../lib/mongoose'),
     Rooms = require('../models/Room').Rooms,
+    service = require('../service/serverResponse_Service'),
     entityRooms = require('../entity/entityRooms');
 
 
-exports.roomUpdate = function(updateObj , req , res) {
+exports.roomCreate = function(updateObj , req , res) {
+    var newRoom = new Rooms({
+        room: {
+            id: updateObj.id,
+            name: updateObj.name,
+            messageCount: 0,
+            listThems: [],
+            lastDateMessage: 0
+        }
+    });
+
+    newRoom.save(function(err , newRoom) {
+
+        if(err) throw  err;
+        service.serverResponse(res, 200 , "Successful create new room", newRoom);
+    });
+};
+
+
+
+
+exports.roomUpdateTheme = function(theme , req , res) {
 
     Rooms.update(
-        {"room.id":updateObj.id},
-        {$set:{"room.name":updateObj.name}},
-        function(err){
+        {"room.id":theme.id},{
+            $pushAll:{
+                "room.listThems": [{
+                    "name": theme.name,
+                    "lastMess": undefined,
+                    "messCount": 0
+                }]
+            }
+        },
+        {
+            upsert:true
+        },
+        function(err , newTheme) {
             if(err) throw err;
+
+            service.serverResponse(res , 200 , "Successful create new theme", newTheme);
         }
     );
-
-    Rooms.find({"room.id": updateObj.id} , function(err, user){
-        res.send(user);
-    })
-
 };
 
