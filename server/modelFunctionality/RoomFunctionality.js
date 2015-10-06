@@ -32,7 +32,7 @@ exports.roomUpdateTheme = function(theme , req , res) {
             $pushAll:{
                 "room.listThems": [{
                     "name": theme.name,
-                    "lastMess": undefined,
+                    "lastMess": 0,
                     "messCount": 0
                 }]
             }
@@ -41,8 +41,8 @@ exports.roomUpdateTheme = function(theme , req , res) {
             upsert:true
         },
         function(err , newTheme) {
-            if(err) throw err;
 
+            if(err) throw err;
             service.serverResponse(res , 200 , "Successful create new theme", newTheme);
         }
     );
