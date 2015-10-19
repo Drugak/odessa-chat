@@ -22,9 +22,15 @@ multer({dest:'./uploads/'}).fields();
 
 
 mongoose.connection.on('open', function (){
+
+    app.get('/api/test', function(req , res) {
+        res.send('ldaslkdjalskdjslk');
+    });
+
     app.get('/', function(req , res) {
         res.send('index.html');
     });
+
     app.get('/api/subscribe' , function(req, res) {
         chat.subscribe(req, res);
     });
