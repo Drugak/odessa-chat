@@ -4,7 +4,6 @@
 var clients = [];
 
 exports.subscribe = function(request, response) {
-    console.log("subscribe");
 
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     clients.push(response);
@@ -15,7 +14,6 @@ exports.subscribe = function(request, response) {
 };
 
 exports.publish = function(message) {
-    console.log("publish '%s'", message);
 
     clients.forEach(function(response) {
         console.log("send to client");

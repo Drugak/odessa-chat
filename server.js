@@ -8,7 +8,8 @@ var http = require('http'),
     request = require('request'),
     bodyParser = require('body-parser'),
     multer = require('multer'),
-    mongoose = require('./server/lib/mongoose');
+    mongoose = require('./server/lib/mongoose'),
+    templyate_Service = require('./server/service/template_Service');
 
 
 // Static server
@@ -22,10 +23,6 @@ multer({dest:'./uploads/'}).fields();
 
 
 mongoose.connection.on('open', function (){
-
-    app.get('/api/test', function(req , res) {
-        res.send('ldaslkdjalskdjslk');
-    });
 
     app.get('/', function(req , res) {
         res.send('index.html');

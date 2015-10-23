@@ -7,14 +7,42 @@ var CHAT = {
         servicesList: {},
         pages: [],
         initPage: function (namePage) {
-            console.log('namePage', namePage);
             for (var i= 0; i < CHAT.API.pages.length; i++) {
-                CHAT.API.pages[i].name == namePage ?
-                    (
-                        CHAT.API.pages[i].pageFn((CHAT.API.servicesList[CHAT.API.pages[i].pageServices])()
-                        )
-                    ): undefined;
-                //TODO:переписать это говно , добавить проверку на отсуствие сервиса , вывод ошибки , сделать отдельным модулем
+                if(CHAT.API.pages[i].pageInfo.name == namePage ) {
+                    CHAT.API.pages[i].pageFn((CHAT.API.servicesList[CHAT.API.pages[i].pageServices])());
+                    CHAT.API.servicesList.httpAjax().get().open(CHAT.API.pages[i].pageInfo.template);
+                }
+            }
+        },
+        initApp : function(router) {
+            var Router = router;
+            Router().config({ mode: 'history'});
+
+            Router().navigate();
+
+            Router()
+                .add(/about/, function() {
+                    console.log('about');
+                    CHAT.API.initPage('about-Page');
+                })
+                .add(/chat/, function() {
+                    console.log('chat');
+                    CHAT.API.initPage('home-Page');
+                })
+                .add(/test/, function() {
+                    console.log('test');
+                })
+                .listen();
+
+            Router().navigate('/');
+
+            var linckTag = document.getElementsByTagName("a");
+
+            for (var i = 0; i < linckTag.length; i++) {
+                linckTag[i].addEventListener("click", function (e) {
+                    e.preventDefault();
+                    Router().navigate(e.srcElement.pathname);
+                });
             }
         }
     }
@@ -36,15 +64,15 @@ CHAT.servicesFunctionality.services = function (name,service) {
 /**
  * This  servicesFunctionality.pages , he brings together pages controllers , then when rout call some pages , this page init and rendering
  */
-CHAT.servicesFunctionality.pages = function(name,services,pageFn){
-    var pageName = name,
+CHAT.servicesFunctionality.pages = function(__pageInfo,services,pageFn){
+    var _pageInfo = __pageInfo,
         pageCode = pageFn,
         pageServices = services;
 
 
     CHAT.API.pages.push(
         {
-            name: pageName,
+            pageInfo: _pageInfo,
             pageFn: pageCode,
             pageServices: pageServices
         }
@@ -65,8 +93,7 @@ CHAT.servicesFunctionality.pages = function(name,services,pageFn){
 //TODO:сделать приватный апи для работы ядра
 
 function innit () {
-    alert('init');
-    CHAT.API.initPage('home-Page');
+    CHAT.API.initApp(CHAT.API.servicesList.router);
 }
 
 setTimeout(innit, 3000);

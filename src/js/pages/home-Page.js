@@ -1,7 +1,6 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages("home-Page", ['httpAjax'], function (httpAjax){
-alert("asdasd");
+CHAT.servicesFunctionality.pages({name:"home-Page", template: "/template/home-Page.html"}, ['storage'], function (storage){
 
     registration.onsubmit = function () {
         var e = new XMLHttpRequest;
@@ -62,9 +61,8 @@ alert("asdasd");
     publish.onsubmit = function () {
         var e = new XMLHttpRequest;
         return e.open("POST", "/api/publish", !0), e.send(JSON.stringify({message: this.elements.message.value})), this.elements.message.value = "", !1
-    }
+    };
 
-    httpAjax.get().open('/api/test');
-    httpAjax.get().send();
+    storage.clear();
 
 });
