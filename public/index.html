@@ -6,57 +6,15 @@
     <link rel="stylesheet" href="app.css">
     <script type="jscript" src="https://raw.github.com/balupton/history.js/master/scripts/bundled/html4+html5/jquery.history.js"></script>
 </head>
-<body id="ololo">
-
-<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-    <legend>Регистрация</legend>
-    <form id="registration" class="chat-input i-flex-row">
-        <input type="text" name="name" class="component-chat_input i-flex-column"/>
-        <input type="password" name="password" class="component-chat_input i-flex-column"/>
-        <button type="submit" class="i-flex-column">Отправить</button>
-    </form>
-</section>
-
-<fildset>
-    <legend>Логин</legend>
-    <section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-        <form id="login" class="chat-input i-flex-row">
-            <input type="text" name="name" class="component-chat_input i-flex-column"/>
-            <input type="password" name="password" class="component-chat_input i-flex-column"/>
-            <button type="submit" class="i-flex-column">Отправить</button>
-        </form>
-    </section>
-</fildset>
-
-<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-    <legend>Чат</legend>
-    <form id="publish" class="chat-input i-flex-row">
-        <input type="text" name="message" class="component-chat_input i-flex-column"/>
-        <button type="submit" class="i-flex-column">Отправить</button>
-    </form>
-    <ul id="messages" class="chat-list-box"></ul>
-</section>
-
-<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-    <legend>Создание комнаты</legend>
-    <form id="rooms" class="chat-input i-flex-row">
-        <input type="text" placeholder="Имя комнаты" name="name" class="component-chat_input i-flex-column"/>
-        <input type="number" name="id" placeholder="id комнаты" class="component-chat_input i-flex-column"/>
-        <button type="submit" class="i-flex-column">Отправить</button>
-    </form>
-</section>
-
-<section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-    <legend>Создание темы в комнате</legend>
-    <form id="roomsTheme" class="chat-input i-flex-row">
-        <input type="number" placeholder="id комнаты" name="id" class="component-chat_input i-flex-column"/>
-        <input type="text" placeholder="название комнаты" name="name" class="component-chat_input i-flex-column"/>
-        <button type="submit" class="i-flex-column">Отправить</button>
-    </form>
-</section>
-
-<a class="link" href="/about">ссылка на ABOUT</a>
-<a class="link" href="/chat">ссылка на CHAT</a>
+<body>
+<header>
+    <a class="link" href="/about">ссылка на ABOUT</a>
+    <a class="link" href="/chat">ссылка на CHAT</a>
+    <a class="link" href="/login">ссылка на LOgin</a>
+    <a class="link" href="/registration">ссылка на registration</a>
+</header>
+<section id="body"></section>
+<footer></footer>
 <script src="base.js"></script>
 </body>
 </html>

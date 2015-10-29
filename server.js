@@ -8,8 +8,7 @@ var http = require('http'),
     request = require('request'),
     bodyParser = require('body-parser'),
     multer = require('multer'),
-    mongoose = require('./server/lib/mongoose'),
-    templyate_Service = require('./server/service/template_Service');
+    mongoose = require('./server/lib/mongoose');
 
 
 // Static server

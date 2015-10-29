@@ -7,10 +7,37 @@ var CHAT = {
         servicesList: {},
         pages: [],
         initPage: function (namePage) {
+
+            var templateFunc = {
+                    loadTemplate : function(i) {
+                        return CHAT.API.servicesList.httpAjax().get(CHAT.API.pages[i].pageInfo.template);
+                    },
+                    renderTemplate : function(template) {
+
+                        var div = document.createElement('div');
+                        div.innerHTML = template;
+                        document.getElementById('body').innerHTML= '';
+
+                        document.getElementById('body').appendChild(div);
+                    }
+                };
+
+
             for (var i= 0; i < CHAT.API.pages.length; i++) {
+
                 if(CHAT.API.pages[i].pageInfo.name == namePage ) {
-                    CHAT.API.pages[i].pageFn((CHAT.API.servicesList[CHAT.API.pages[i].pageServices])());
-                    CHAT.API.servicesList.httpAjax().get().open(CHAT.API.pages[i].pageInfo.template);
+
+                    templateFunc.loadTemplate(i).then(
+                        function(result) {
+                            templateFunc.renderTemplate(result);
+                            console.log(
+                                CHAT.API.pages[i],i
+                            );
+                            CHAT.API.pages[i -1].pageFn((CHAT.API.servicesList[CHAT.API.pages[i -1].pageServices])());
+                        }, function (error) {
+                            console.error(error)
+                        }
+                    )
                 }
             }
         },
@@ -29,8 +56,11 @@ var CHAT = {
                     console.log('chat');
                     CHAT.API.initPage('home-Page');
                 })
-                .add(/test/, function() {
-                    console.log('test');
+                .add(/login/, function() {
+                    CHAT.API.initPage('login-Page');
+                })
+                .add(/registration/, function() {
+                    CHAT.API.initPage('registration-Page');
                 })
                 .listen();
 

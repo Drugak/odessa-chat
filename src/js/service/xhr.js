@@ -4,36 +4,29 @@ CHAT.servicesFunctionality.services('httpAjax', function(url , params) {
         _url = url,
         _params = params;
     return {
-        get: function () {
-            return {
-                open: function ( __url , __params){
-                    var params = __params,
-                        url = __url;
-                        xhr.open("GET", url + (params? params: ''), true);
+        get: function (url) {
+            return new Promise(function(resolve, reject) {
 
-                    xhr.send();
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
 
-                    xhr.onreadystatechange = function() {
-
-                        if (this.readyState == 4) console.log(this.response);
-
-                        // по окончании запроса доступны:
-                        // status, statusText
-                        // responseText, responseXML (при content-type: text/xml)
-
-                        if (this.status != 200) {
-                            // обработать ошибку
-                            alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался'));
-                            return;
-                        }
+                xhr.onload = function() {
+                    if (this.status == 200) {
+                        resolve(this.response);
+                    } else {
+                        var error = new Error(this.statusText);
+                        error.code = this.status;
+                        reject(error);
                     }
+                };
 
-                },
+                xhr.onerror = function() {
+                    reject(new Error("Network Error"));
+                };
 
-                send: function (){
-                    return xhr.send();
-                }
-            }
+                xhr.send();
+            });
+
         }
     }
 });

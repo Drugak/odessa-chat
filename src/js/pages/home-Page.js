@@ -1,19 +1,7 @@
 'use strict';
 
 CHAT.servicesFunctionality.pages({name:"home-Page", template: "/template/home-Page.html"}, ['storage'], function (storage){
-
-    registration.onsubmit = function () {
-        var e = new XMLHttpRequest;
-        return e.open("POST", "/api/registration", !0),
-            e.send(JSON.stringify({
-                    name: this.elements.name.value,
-                    password: this.elements.password.value
-                })
-            ),
-            this.elements.name.value = "", this.elements.password.value = "", !1
-    };
-
-
+    alert('home');
     rooms.onsubmit = function () {
         var e = new XMLHttpRequest;
         return e.open("PUT", "/api/room-create", !0),
