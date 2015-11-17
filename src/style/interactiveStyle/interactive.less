@@ -15,6 +15,8 @@
     flex-direction: row;
     flex-flow: nowrap;
     justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
   }
   &-center-v-h {
     display: flex;
@@ -44,4 +46,20 @@
 
 .i-none {
   display: none;
+}
+
+.i-clearfix {
+  *zoom: 1;
+  &:before {
+    content: "";
+    display: table;
+  }
+  &:after {
+    &:extend(.i-clearfix:before);
+    clear : both;
+  }
+}
+
+.i-box-sizing {
+  box-sizing: border-box;
 }

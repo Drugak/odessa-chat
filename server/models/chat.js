@@ -1,28 +1,32 @@
 /**
  * Created by Noxval on 17.09.15.
  */
-var clients = [];
+var clients = {};
 
-exports.subscribe = function(request, response) {
+exports.subscribe = function(request, response , data) {
 
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    clients.push(response);
+
+    if(!clients[data.roomName]) clients[data.roomName] = [];
+
+    clients[data.roomName].push(response);
+    console.log(clients[data.roomName]);
+    //clients.push(response);
 
     response.on('close', function() {
-        clients.splice(clients.indexOf(response), 1);
+        clients[data.roomName].splice(clients[data.roomName].indexOf(response), 1);
     });
 };
 
-exports.publish = function(message) {
 
-    clients.forEach(function(response) {
-        console.log("send to client");
-        response.end(message);
+
+exports.publish = function(body) {
+
+    if(!clients[body.roomName]) clients[body.roomName] = [];
+
+    clients[body.roomName].forEach(function(response) {
+        response.end(body.message);
     });
 
-    clients = [];
+    clients[body.roomName] = [];
 };
-
-setInterval(function() {
-    console.log(clients.length);
-}, 5000);

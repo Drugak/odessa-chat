@@ -48,3 +48,9 @@ exports.roomUpdateTheme = function(theme , req , res) {
     );
 };
 
+exports.getAllRooms = function(req , res) {
+    Rooms.find(function(err , obj) {
+        res.send(obj);
+    })
+};
+

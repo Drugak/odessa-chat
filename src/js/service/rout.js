@@ -2,7 +2,7 @@ CHAT.servicesFunctionality.services('router', function() {
     console.info('router init');
     return {
         routes: [],
-        mode: null,
+        mode: 'history',
         root: '/',
         config: function(options) {
             this.mode = options && options.mode && options.mode == 'history'
@@ -82,33 +82,18 @@ CHAT.servicesFunctionality.services('router', function() {
                 window.location.href = window.location.href.replace(/#(.*)$/, '') + '#' + path;
             }
             return this;
+        },
+        linkSettings: function () {
+            var me = this;
+            var linckTag = document.getElementsByTagName("a");
+
+            for (var i = 0; i < linckTag.length; i++) {
+                linckTag[i].addEventListener("click", function (e) {
+                    e.preventDefault();
+                    //TODO:переписать на регулярное выражение
+                    me.navigate(this.href.split('ttp://localhost:3000')[1]);
+                } , true);
+            }
         }
     };
 });
-
-
-//
-//Router.config({ mode: 'history'});
-//
-//// returning the user to the initial state
-//Router.navigate();
-//
-//// adding routes
-//Router
-//    .add(/about/, function() {
-//        console.log('about');
-//    })
-//    .add(/chat/, function() {
-//        console.log('chat');
-//    })
-//    .add(/test/, function() {
-//        console.log('test');
-//    })
-//    .add(function() {
-//        console.log('default');
-//    })
-//    .listen();
-//
-//// forwarding
-//Router.navigate('/');
-

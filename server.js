@@ -27,8 +27,15 @@ mongoose.connection.on('open', function (){
         res.send('index.html');
     });
 
-    app.get('/api/subscribe' , function(req, res) {
-        chat.subscribe(req, res);
+    app.post('/api/subscribe' , function(req, res) {
+        req.on('readable', function() {
+            chat.subscribe(req, res , JSON.parse(req.read()) , req , res);
+        })
+
+    });
+
+    app.get('/api/getAllRooms' , function(req, res) {
+        room.getAllRooms(req, res);
     });
 
     app.post('/api/publish', function (req , res) {
@@ -52,11 +59,12 @@ mongoose.connection.on('open', function (){
                     return;
                 }
 
-                chat.publish(body.message);
+                chat.publish(body);
                 res.end("ok");
             });
 
     });
+
     app.post('/api/registration', function(req , res) {
         req.on('readable', function() {
             user.saveUser(
@@ -82,10 +90,10 @@ mongoose.connection.on('open', function (){
             )
         })
     });
-    app.put('/api/room-update-theme' , function(req , res) {
-        req.on('readable', function() {
+    app.put('/api/room-update-theme', function(req , res) {
+        req.on('readable', function () {
             room.roomUpdateTheme(
-                JSON.parse(req.read()) , req , res
+                JSON.parse(req.read()) ,req , res
             )
         })
     });

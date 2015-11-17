@@ -1,6 +1,7 @@
 'use strict';
 
 CHAT.servicesFunctionality.pages({name:"login-Page", template: "/template/login-Page.html"}, ['storage'], function (storage){
+
     login.onsubmit = function () {
         var e = new XMLHttpRequest;
         return e.open("POST", "/api/authorize", !0),
@@ -11,4 +12,5 @@ CHAT.servicesFunctionality.pages({name:"login-Page", template: "/template/login-
             ),
             this.elements.name.value = "", this.elements.password.value = "", !1
     };
+
 });

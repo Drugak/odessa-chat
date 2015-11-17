@@ -6,19 +6,39 @@ var CHAT = {
     API: {
         servicesList: {},
         pages: [],
+        cashTemplates: {},
         initPage: function (namePage) {
 
             var templateFunc = {
                     loadTemplate : function(i) {
-                        return CHAT.API.servicesList.httpAjax().get(CHAT.API.pages[i].pageInfo.template);
+                        var thisCashTemplates = CHAT.API.cashTemplates[CHAT.API.pages[i].pageInfo.name.replace("-","_")];
+
+                        if (!thisCashTemplates) {
+                            var tpl = CHAT.API.servicesList.httpAjax().get(CHAT.API.pages[i].pageInfo.template , 'GET');
+                            CHAT.API.cashTemplates[CHAT.API.pages[i].pageInfo.name.replace("-","_")] = tpl;
+
+                            return tpl;
+                        }
+
+                        return thisCashTemplates;
                     },
                     renderTemplate : function(template) {
 
                         var div = document.createElement('div');
                         div.innerHTML = template;
                         document.getElementById('body').innerHTML= '';
-
                         document.getElementById('body').appendChild(div);
+                        //TODO:оптимизировать и вынести в отдельный класс
+                        CHAT.API.servicesList.router().linkSettings();
+                    },
+                    concatService : function(countPage) {
+
+                        var serviceForPage = {};
+                        for (var z = 0; z < CHAT.API.pages[countPage].pageServices.length; z++) {
+                            serviceForPage[CHAT.API.pages[countPage].pageServices[z]] = (CHAT.API.servicesList[CHAT.API.pages[countPage].pageServices[z]])();
+                        }
+
+                        return serviceForPage;
                     }
                 };
 
@@ -27,13 +47,12 @@ var CHAT = {
 
                 if(CHAT.API.pages[i].pageInfo.name == namePage ) {
 
+                    var countPage = i;
+
                     templateFunc.loadTemplate(i).then(
                         function(result) {
                             templateFunc.renderTemplate(result);
-                            console.log(
-                                CHAT.API.pages[i],i
-                            );
-                            CHAT.API.pages[i -1].pageFn((CHAT.API.servicesList[CHAT.API.pages[i -1].pageServices])());
+                            CHAT.API.pages[countPage].pageFn(templateFunc.concatService(countPage));
                         }, function (error) {
                             console.error(error)
                         }
@@ -43,7 +62,6 @@ var CHAT = {
         },
         initApp : function(router) {
             var Router = router;
-            Router().config({ mode: 'history'});
 
             Router().navigate();
 
@@ -52,28 +70,25 @@ var CHAT = {
                     console.log('about');
                     CHAT.API.initPage('about-Page');
                 })
-                .add(/chat/, function() {
-                    console.log('chat');
-                    CHAT.API.initPage('home-Page');
-                })
                 .add(/login/, function() {
                     CHAT.API.initPage('login-Page');
                 })
                 .add(/registration/, function() {
                     CHAT.API.initPage('registration-Page');
                 })
+                .add(/chat/, function() {
+                    CHAT.API.initPage('chat-Page');
+                })
+                .add(/home/, function() {
+                    CHAT.API.initPage('home-Page');
+                })
+
+                .add(/hui/, function() {
+                    CHAT.API.initPage('home-Page');
+                })
                 .listen();
 
-            Router().navigate('/');
-
-            var linckTag = document.getElementsByTagName("a");
-
-            for (var i = 0; i < linckTag.length; i++) {
-                linckTag[i].addEventListener("click", function (e) {
-                    e.preventDefault();
-                    Router().navigate(e.srcElement.pathname);
-                });
-            }
+            Router().navigate('/home/');
         }
     }
 };
@@ -123,6 +138,30 @@ CHAT.servicesFunctionality.pages = function(__pageInfo,services,pageFn){
 //TODO:сделать приватный апи для работы ядра
 
 function innit () {
+    (function(){
+        var cache = {};
+
+        window.tmpl = function tmpl(str, data){
+            var fn = !/\W/.test(str) ?
+                cache[str] = cache[str] ||
+                    tmpl(document.getElementById(str).innerHTML) :
+                new Function("obj",
+                    "var p=[],print=function(){p.push.apply(p,arguments);};" +
+                    "with(obj){p.push('" +
+                    str
+                        .replace(/[\r\t\n]/g, " ")
+                        .split("<%").join("\t")
+                        .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+                        .replace(/\t=(.*?)%>/g, "',$1,'")
+                        .split("\t").join("');")
+                        .split("%>").join("p.push('")
+                        .split("\r").join("\\'")
+                    + "');}return p.join('');");
+
+            return data ? fn( data ) : fn;
+        };
+    })();
+
     CHAT.API.initApp(CHAT.API.servicesList.router);
 }
 

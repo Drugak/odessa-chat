@@ -1,4 +1,5 @@
 CHAT.servicesFunctionality.services('storage' , function () {
+    console.info("Start work storage");
     return {
         push: function (key, value) {
             try {

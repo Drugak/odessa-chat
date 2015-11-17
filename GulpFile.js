@@ -68,7 +68,7 @@ gulp.task('scriptsConcat', function() {
 //HTML Tasks
 //====================================
 gulp.task('minifyHtml', function() {
-    gulp.src('./src/template/*.html')
+    gulp.src('./src/template/**/**/*.html')
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('./public/template'))
 });
@@ -85,7 +85,7 @@ gulp.task('whatchJs' , function () {
 });
 
 gulp.task('whatchHTML' , function () {
-    gulp.watch('src/template/*.html' , ['minifyHtml']);
+    gulp.watch('src/template/**/**/*.html' , ['minifyHtml']);
 });
 
 gulp.task('whatchAll', ['whatchStyle' , 'whatchJs', 'whatchHTML'], function() {});

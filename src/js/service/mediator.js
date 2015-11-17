@@ -11,6 +11,9 @@
 "use strict"
 
 CHAT.servicesFunctionality.services('mediator', function() {
+
+    console.info("Start work mediator");
+
     var listen = function (channel,fn) {
             if(!mediator.channels[channel])
                 mediator.channels[channel] = [];
