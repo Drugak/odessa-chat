@@ -1,32 +1,44 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages({name:"chat-Page", template: "/template/chat-Page.html"}, ['storage' , 'urlData' , 'httpAjax'], function (services){
+CHAT.servicesFunctionality.pages({name:"chat-Page", template: "/template/chatPage/chat-Page.html"}, ['storage' , 'urlData' , 'httpAjax'], function (services){
 
 
     var settings = {
-        urlSearch : services.urlData.search
+        urlSearch : services.urlData.search,
+        userName : services.storage.get('userInfo'),
+        chatMessHtml : services.httpAjax.get("/template/chatPage/microTemplate/chatMessage.html").then(function(respons){
+            settings.chatMessHtml = respons
+        }, function(err) {
+            console.err(err);
+        })
     };
 
     var API = {
-        checkChatRoom : function () {
+        checkChatRoom : function() {
             return settings.urlSearch.roomName != undefined ? {roomName : settings.urlSearch.roomName} : 'baseRoom';
+        },
+        checkNewMessages : function() {
+            (function e() {
+                var xhr = new XMLHttpRequest;
+                xhr.open("POST", "/api/subscribe", true), xhr.onreadystatechange = function () {
+                    if (4 == this.readyState) {
+                        if (200 != this.status)return void setTimeout(e, 500);
+
+                        var messageHtml = tmpl(settings.chatMessHtml, JSON.parse(this.responseText));
+                        messages.innerHTML = messageHtml;
+                    }
+                }, xhr.send(JSON.stringify(API.checkChatRoom()))
+            }());
         }
     };
 
-    (function e() {
-        var t = new XMLHttpRequest;
-        t.open("POST", "/api/subscribe", true), t.onreadystatechange = function () {
-            if (4 == this.readyState) {
-                if (200 != this.status)return void setTimeout(e, 500);
-                var t = document.createElement("li");
-                t.appendChild(document.createTextNode(this.responseText)), messages.appendChild(t), e()
-            }
-        }, t.send(JSON.stringify(API.checkChatRoom()))
-    }());
+
+    API.checkNewMessages();
 
     publish.onsubmit = function () {
         var e = new XMLHttpRequest;
         var reqData = {
+            userName: settings.userName.username,
             message : this.elements.messages.value,
             roomName : API.checkChatRoom().roomName
         };

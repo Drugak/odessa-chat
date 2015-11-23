@@ -29,7 +29,7 @@ mongoose.connection.on('open', function (){
 
     app.post('/api/subscribe' , function(req, res) {
         req.on('readable', function() {
-            chat.subscribe(req, res , JSON.parse(req.read()) , req , res);
+            chat.subscribe(req, res , JSON.parse(req.read()));
         })
 
     });
@@ -59,7 +59,7 @@ mongoose.connection.on('open', function (){
                     return;
                 }
 
-                chat.publish(body);
+                chat.publish(body ,res);
                 res.end("ok");
             });
 

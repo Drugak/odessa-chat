@@ -2,7 +2,11 @@
 
 var CHAT = {
     servicesFunctionality : {},
-    root: {},
+    config : {
+        urlsConfig : {
+            //TODO create servisec for generate short url for download microTemplates
+        }
+    },
     API: {
         servicesList: {},
         pages: [],

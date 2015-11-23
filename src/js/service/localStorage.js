@@ -11,7 +11,7 @@ CHAT.servicesFunctionality.services('storage' , function () {
             }
         },
         get: function (key) {
-            localStorage.getItem(key);
+            return JSON.parse(localStorage.getItem(key));
         },
         clear: function (key) {
             localStorage.removeItem(key);
