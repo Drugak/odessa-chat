@@ -67,32 +67,42 @@ var CHAT = {
         initApp : function(router) {
             var Router = router;
 
+            var urlPromise = CHAT.API.servicesList.httpAjax().get('/api/saveUrl');
+
+            urlPromise.then(function(respons){
+                if(respons.length) {
+                    Router().navigate(respons+'/');
+                } else {
+                    CHAT.API.initPage('home-Page');
+                    Router().navigate('/home.do/');
+                }
+            },function(err) {
+                console.error(err);
+            });
+
+
             Router().navigate();
 
             Router()
-                .add(/about/, function() {
+                .add(/about.do/, function() {
                     console.log('about');
                     CHAT.API.initPage('about-Page');
                 })
-                .add(/login/, function() {
+                .add(/login.do/, function() {
                     CHAT.API.initPage('login-Page');
                 })
-                .add(/registration/, function() {
+                .add(/registration.do/, function() {
                     CHAT.API.initPage('registration-Page');
                 })
-                .add(/chat/, function() {
+                .add(/chat.do/, function() {
                     CHAT.API.initPage('chat-Page');
                 })
-                .add(/home/, function() {
-                    CHAT.API.initPage('home-Page');
-                })
-
-                .add(/hui/, function() {
+                .add(/home.do/, function() {
                     CHAT.API.initPage('home-Page');
                 })
                 .listen();
 
-            Router().navigate('/home/');
+            Router().navigate('/home.do/');
         }
     }
 };

@@ -1,27 +1,28 @@
-<fildset>
-    <legend>
-        <h1>Страница чата</h1>
-    </legend>
-    <section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-        <form id="publish" class="chat-input i-flex-row">
-            <input type="text" name="messages" class="component-chat_input i-flex-column"/>
-            <button type="submit" class="i-flex-column">Отправить</button>
-        </form>
-        <ul id="messages"></ul>
-    </section>
-</fildset>
+<div class="chat-page">
+    <fildset>
+        <legend>
+            <h1>Страница чата</h1>
+        </legend>
+        <section class="chat-page_chat-box">
+            <ul id="messages" class="i-box-shadow"></ul>
+            <form id="publish" class="chat-input i-box-shadow i-flex-row">
+                <input type="text" name="messages" class="component-chat_input i-flex-column"/>
+                <button type="submit" class="i-flex-column">Отправить</button>
+            </form>
+        </section>
+    </fildset>
 
 
-<fildset>
-    <legend>
-        <h1>Создание комнаты</h1>
-    </legend>
-    <section class="chat-page_chat-box i-box-shadow" style="background: #fff">
-        <form id="rooms" class="chat-input i-flex-row">
-            <input type="number" name="id" class="component-chat_input i-flex-column"/>
-            <input type="text" name="name" class="component-chat_input i-flex-column"/>
-            <button type="submit" class="i-flex-column">Отправить</button>
-        </form>
-    </section>
-</fildset>
-
+    <fildset class="i-none">
+        <legend>
+            <h1>Создание комнаты</h1>
+        </legend>
+        <section class="chat-page_chat-box i-box-shadow" style="background: #fff">
+            <form id="rooms" class="chat-input i-flex-row">
+                <input type="number" name="id" class="component-chat_input i-flex-column"/>
+                <input type="text" name="name" class="component-chat_input i-flex-column"/>
+                <button type="submit" class="i-flex-column">Отправить</button>
+            </form>
+        </section>
+    </fildset>
+</div>

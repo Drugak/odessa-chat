@@ -1,0 +1,24 @@
+.chat-page {
+  &_chat-box {
+    #publish {
+      .component-chat_input {
+        flex: 100;
+      }
+    }
+    #messages {
+      max-height: 500px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      background-color: white;
+      li {
+        display: block;
+        margin: 10px;
+        border-bottom: 1px solid #c0c0c0;
+
+        &:last-child {
+        border-bottom: none;
+        }
+      }
+    }
+  }
+}

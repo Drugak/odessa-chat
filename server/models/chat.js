@@ -24,8 +24,8 @@ exports.publish = function(body) {
     if(!clients[body.roomName]) clients[body.roomName] = [];
 
     clients[body.roomName].forEach(function(response) {
-        //response.send(body);
-        response.send(body.message , body.userName);
-        //service.serverResponse(response,200,'Message send success',body);
+        service.serverResponse(response,200,'Message send success',body);
     });
+
+    clients[body.roomName] = [];
 };

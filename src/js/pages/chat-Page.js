@@ -16,24 +16,26 @@ CHAT.servicesFunctionality.pages({name:"chat-Page", template: "/template/chatPag
     var API = {
         checkChatRoom : function() {
             return settings.urlSearch.roomName != undefined ? {roomName : settings.urlSearch.roomName} : 'baseRoom';
-        },
-        checkNewMessages : function() {
-            (function e() {
-                var xhr = new XMLHttpRequest;
-                xhr.open("POST", "/api/subscribe", true), xhr.onreadystatechange = function () {
-                    if (4 == this.readyState) {
-                        if (200 != this.status)return void setTimeout(e, 500);
-
-                        var messageHtml = tmpl(settings.chatMessHtml, JSON.parse(this.responseText));
-                        messages.innerHTML = messageHtml;
-                    }
-                }, xhr.send(JSON.stringify(API.checkChatRoom()))
-            }());
         }
     };
 
 
-    API.checkNewMessages();
+    (function e() {
+        var t = new XMLHttpRequest;
+        t.open("POST", "/api/subscribe", true), t.onreadystatechange = function () {
+            if (4 == this.readyState) {
+                if (200 != this.status)return void setTimeout(e, 500);
+
+                var t = document.createElement("li"),
+                    messageHtml = tmpl(settings.chatMessHtml, JSON.parse(this.responseText));
+
+                t.innerHTML = messageHtml;
+                messages.appendChild(t);
+
+                e();
+            }
+        }, t.send(JSON.stringify(API.checkChatRoom()))
+    }());
 
     publish.onsubmit = function () {
         var e = new XMLHttpRequest;

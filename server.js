@@ -17,14 +17,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 multer({dest:'./uploads/'}).single();
 multer({dest:'./uploads/'}).array();
 multer({dest:'./uploads/'}).fields();
+// end
 
+
+// Var for open page of Url
+var saveUrl = '';
 // end
 
 
 mongoose.connection.on('open', function (){
 
+    app.get('/*.do', function(req, res) {
+        saveUrl = req.originalUrl;
+        res.redirect('/');
+    });
+
     app.get('/', function(req , res) {
         res.send('index.html');
+    });
+
+    app.get('/api/saveUrl', function(req , res) {
+        var _saveUrl = saveUrl;
+        saveUrl = '';
+        res.send(_saveUrl);
     });
 
     app.post('/api/subscribe' , function(req, res) {
