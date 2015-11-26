@@ -14,7 +14,6 @@ CHAT.servicesFunctionality.pages({name:"login-Page", template: "/template/login-
     //        this.elements.name.value = "", this.elements.password.value = "", !1
     //};
 
-
     login.onsubmit = function (e) {
 
         e.preventDefault();
