@@ -2,9 +2,14 @@
 
 var CHAT = {
     servicesFunctionality : {},
-    config : {
-        urlsConfig : {
-            //TODO create servisec for generate short url for download microTemplates
+    constant : {
+        titleNode: document.getElementById('page-title')
+    },
+    baseServices : {
+        changeTitle : function(title) {
+            console.log(CHAT.constant, "===");
+            CHAT.constant.titleNode.innerHTML = title;
+            return;
         }
     },
     API: {
@@ -60,7 +65,11 @@ var CHAT = {
                         }, function (error) {
                             console.error(error)
                         }
-                    )
+                    );
+
+                    CHAT.baseServices.changeTitle(
+                        CHAT.API.pages[countPage].pageInfo.pageTitle
+                    );
                 }
             }
         },

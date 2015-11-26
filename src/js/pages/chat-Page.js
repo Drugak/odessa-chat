@@ -1,7 +1,13 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages({name:"chat-Page", template: "/template/chatPage/chat-Page.html"}, ['storage' , 'urlData' , 'httpAjax'], function (services){
-
+CHAT.servicesFunctionality.pages(
+    {
+        name:"chat-Page",
+        pageTitle:"Чат, главная комната",
+        template: "/template/chatPage/chat-Page.html"
+    },
+    ['storage' , 'urlData' , 'httpAjax'],
+    function (services){
 
     var settings = {
         urlSearch : services.urlData.search,
@@ -15,9 +21,17 @@ CHAT.servicesFunctionality.pages({name:"chat-Page", template: "/template/chatPag
 
     var API = {
         checkChatRoom : function() {
-            return settings.urlSearch.roomName != undefined ? {roomName : settings.urlSearch.roomName} : 'baseRoom';
+            return settings.urlSearch.roomName != undefined ? {roomName : settings.urlSearch.roomName} : {roomName : 'baseRoom'};
+        },
+        changeTitle : function (title) {
+            if (title.roomName !== 'baseRoom') CHAT.baseServices.changeTitle("Чат - "+title.roomName);
         }
     };
+
+
+    API.changeTitle(
+        API.checkChatRoom()
+    );
 
 
     (function e() {

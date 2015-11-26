@@ -1,6 +1,13 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages({name:"login-Page", template: "/template/login-Page.html"}, ['storage' , 'httpAjax'], function (services){
+CHAT.servicesFunctionality.pages(
+    {
+        name:"login-Page",
+        pageTitle:"Авторизация",
+        template: "/template/login-Page.html"
+    },
+    ['storage' , 'httpAjax'],
+    function (services){
 
     //
     //login.onsubmit = function () {

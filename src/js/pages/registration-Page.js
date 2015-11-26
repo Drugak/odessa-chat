@@ -1,6 +1,13 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages({name:"registration-Page", template: "/template/registration-Page.html"}, ['storage'], function (storage){
+CHAT.servicesFunctionality.pages(
+    {
+        name:"registration-Page",
+        pageTitle:"Регистрация",
+        template: "/template/registration-Page.html"
+    },
+    ['storage'],
+    function (storage){
     registration.onsubmit = function () {
         var e = new XMLHttpRequest;
         return e.open("POST", "/api/registration", !0),

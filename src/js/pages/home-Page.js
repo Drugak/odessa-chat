@@ -1,6 +1,13 @@
 'use strict';
 
-CHAT.servicesFunctionality.pages({name:"home-Page", template: "/template/homePage/home-Page.html"}, ['storage', 'mediator' , 'httpAjax'], function (services){
+CHAT.servicesFunctionality.pages(
+    {
+        name:"home-Page",
+        pageTitle:"Главная",
+        template: "/template/homePage/home-Page.html"
+    },
+    ['storage', 'mediator' , 'httpAjax'],
+    function (services){
 
     //login.onsubmit = function () {
     //    var e = new XMLHttpRequest;
